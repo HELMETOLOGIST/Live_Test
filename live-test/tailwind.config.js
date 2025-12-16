@@ -15,5 +15,5 @@ import react from "@vitejs/plugin-react";
 
 export default defineConfig({
   plugins: [react()],
-  base: "/hardware-catalog/", // repo name
+  base: "/Live_Test/", // repo name
 });
