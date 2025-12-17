@@ -1,30 +1,37 @@
 import React, { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
+import { ChevronRight } from "lucide-react";
+
+// Assuming these imports remain the same
+import bosch from "@/assets/banners/bosch1.png";
+import dewalt1 from "@/assets/banners/dewalt1.jpg";
+import dewalt2 from "@/assets/banners/dewalt2.jpg";
+import makita from "@/assets/banners/makita1.webp";
 
 const slides = [
   {
-    img: "http://localhost:8000/media/banner/bosch1.png", // NO import needed
-    heading: "Discover New Arrivals",
-    sub: "Fresh trends curated just for you.",
-    btn: "Shop Now",
+    img: bosch,
+    heading: "Precision Unleashed",
+    sub: "Professional grade tools for master craftsmen.",
+    btn: "Shop Bosch",
   },
   {
-    img: "http://localhost:8000/media/banner/dewalt1.jpg",
-    heading: "Discover New Arrivals",
-    sub: "Fresh trends curated just for you.",
-    btn: "Shop Now",
+    img: dewalt1,
+    heading: "Toughness Redefined",
+    sub: "Guaranteed tough. Built for the modern jobsite.",
+    btn: "Explore DeWalt",
   },
   {
-    img: "http://localhost:8000/media/banner/dewalt2.jpg",
+    img: dewalt2,
     heading: "Limited Time Offers",
-    sub: "Don’t miss out on exclusive deals.",
-    btn: "Grab Now",
+    sub: "Exclusive discounts on heavy-duty machinery.",
+    btn: "Grab Deals",
   },
   {
-    img: "http://localhost:8000/media/banner/makita1.webp",
-    heading: "Comfort Meets Style",
-    sub: "Feel good, look great, every day.",
-    btn: "View Products",
+    img: makita,
+    heading: "Cordless Innovation",
+    sub: "LXT technology for world-class performance.",
+    btn: "View Makita",
   },
 ];
 
@@ -32,34 +39,42 @@ export default function HeroSlider() {
   const [index, setIndex] = useState(0);
   const slideRefs = useRef([]);
   const textRefs = useRef([]);
+  const progressRefs = useRef([]);
 
   useEffect(() => {
-    // Fade in + zoom image
+    // 1. Image Background Animation (Zoom + Slight Rotation)
     gsap.fromTo(
       slideRefs.current[index],
-      { opacity: 0, scale: 1.1 },
-      {
-        opacity: 1,
-        scale: 1,
-        duration: 1.5,
-        ease: "power3.out",
-      }
+      { scale: 1.2, opacity: 0 },
+      { scale: 1, opacity: 1, duration: 2, ease: "power4.out" }
     );
 
-    // Animate text
+    // 2. Staggered Text Animation
+    const content = textRefs.current[index];
+    if (content) {
+      const elements = content.children;
+      gsap.fromTo(
+        elements,
+        { y: 50, opacity: 0 },
+        { 
+          y: 0, 
+          opacity: 1, 
+          duration: 1, 
+          stagger: 0.2, 
+          ease: "back.out(1.7)",
+          delay: 0.3 
+        }
+      );
+    }
+
+    // 3. Progress Bar Animation
     gsap.fromTo(
-      textRefs.current[index],
-      { opacity: 0, y: 40 },
-      {
-        opacity: 1,
-        y: 0,
-        duration: 1.3,
-        ease: "power3.out",
-        delay: 0.2,
-      }
+      progressRefs.current[index],
+      { width: "0%" },
+      { width: "100%", duration: 5, ease: "none" }
     );
 
-    // Auto-slide
+    // Auto-slide logic
     const interval = setInterval(() => {
       setIndex((prev) => (prev === slides.length - 1 ? 0 : prev + 1));
     }, 5000);
@@ -68,58 +83,79 @@ export default function HeroSlider() {
   }, [index]);
 
   return (
-    <div className="relative w-full h-[420px] md:h-[520px] lg:h-[580px] overflow-hidden">
+    <div className="relative w-full h-[500px] md:h-[650px] lg:h-[750px] overflow-hidden bg-black">
       {slides.map((slide, i) => (
         <div
           key={i}
-          ref={(el) => (slideRefs.current[i] = el)}
-          className={`absolute inset-0 transition-opacity duration-700 ${
-            i === index ? "opacity-100 z-20" : "opacity-0 z-0"
+          className={`absolute inset-0 z-10 ${
+            i === index ? "visible pointer-events-auto" : "invisible pointer-events-none"
           }`}
         >
           {/* Background Image */}
-          <img
-            src={slide.img}
-            alt="slide"
-            className="w-full h-full object-cover object-center"
-          />
-
-          {/* Gradient Overlay */}
-          <div className="absolute inset-0 bg-linear-to-r from-black/60 to-black/10"></div>
+          <div className="absolute inset-0 overflow-hidden">
+            <img
+              ref={(el) => (slideRefs.current[i] = el)}
+              src={slide.img}
+              alt="slide"
+              className="w-full h-full object-cover"
+            />
+            {/* Darker Overlay for Text Contrast */}
+            <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent"></div>
+          </div>
 
           {/* Text Content */}
-          {i === index && (
-            <div
-              ref={(el) => (textRefs.current[i] = el)}
-              className="absolute left-8 top-1/2 -translate-y-1/2 max-w-xl text-white space-y-4"
-            >
-              <h1 className="text-4xl md:text-6xl font-bold drop-shadow-lg">
-                {slide.heading}
-              </h1>
+          <div
+            ref={(el) => (textRefs.current[i] = el)}
+            className="absolute left-6 md:left-20 top-1/2 -translate-y-1/2 max-w-2xl text-white space-y-6"
+          >
+            <h1 className="text-5xl md:text-8xl font-black uppercase tracking-tighter leading-[0.9] drop-shadow-2xl">
+              {slide.heading}
+            </h1>
 
-              <p className="text-lg md:text-xl text-gray-200 drop-shadow-md">
-                {slide.sub}
-              </p>
+            <p className="text-lg md:text-2xl text-gray-300 font-medium max-w-lg">
+              {slide.sub}
+            </p>
 
-              <button className="mt-4 px-8 py-3 bg-pink-600 hover:bg-pink-500 rounded-full text-white text-lg font-semibold shadow-lg transition">
+            <div className="flex items-center gap-4">
+              <button className="group flex items-center gap-2 px-10 py-4 bg-red-600 hover:bg-white hover:text-red-600 rounded-full text-white text-lg font-black uppercase tracking-widest transition-all duration-300 shadow-2xl">
                 {slide.btn}
+                <ChevronRight className="group-hover:translate-x-2 transition-transform" />
               </button>
             </div>
-          )}
+          </div>
         </div>
       ))}
 
-      {/* Dots */}
-      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-3">
+      {/* Modern Navigation Controls */}
+      <div className="absolute bottom-12 left-6 md:left-20 right-6 md:right-auto z-30 flex items-center gap-4">
         {slides.map((_, i) => (
-          <div
+          <button
             key={i}
             onClick={() => setIndex(i)}
-            className={`w-3 h-3 rounded-full cursor-pointer transition ${
-              index === i ? "bg-white" : "bg-white/40"
-            }`}
-          ></div>
+            className="group flex flex-col gap-2"
+          >
+            {/* Numbering */}
+            <span className={`text-[10px] font-black transition-colors ${index === i ? "text-white" : "text-white/30"}`}>
+              0{i + 1}
+            </span>
+            {/* The Progress Bar Container */}
+            <div className="w-16 md:w-24 h-[3px] bg-white/20 rounded-full overflow-hidden">
+              <div
+                ref={(el) => (progressRefs.current[i] = el)}
+                className={`h-full bg-red-600 transition-opacity ${
+                  index === i ? "opacity-100" : "opacity-0"
+                }`}
+              ></div>
+            </div>
+          </button>
         ))}
+      </div>
+
+      {/* Side Brand Badge */}
+      <div className="absolute right-10 top-1/2 -rotate-90 origin-right translate-y-1/2 z-30 hidden lg:block">
+        <span className="text-white/10 text-9xl font-black uppercase tracking-widest select-none">
+          SENSE BRAND
+        </span>
       </div>
     </div>
   );

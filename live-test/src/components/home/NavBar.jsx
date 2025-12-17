@@ -1,11 +1,30 @@
 import { useState, useEffect } from "react";
-import { Menu, X, Search, ShoppingCart, ChevronDown } from "lucide-react";
+import { X, Search, ShoppingCart, ChevronDown, ChevronRight, Phone, MessageSquare, User, Settings, LogOut, LogIn } from "lucide-react";
 import Support from "../home/Support";
 
 export default function VestelNavbar() {
   const [openSupport, setOpenSupport] = useState(false);
   const [openMega, setOpenMega] = useState(null);
   const [activeItem, setActiveItem] = useState("Mobiles");
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [mobileSection, setMobileSection] = useState(null);
+  const [openProfile, setOpenProfile] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [isSubNavOpen, setIsSubNavOpen] = useState(false);
+
+  // Handle Scroll Effect
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 20) {
+        setScrolled(true);
+      } else {
+        setScrolled(false);
+        setIsSubNavOpen(false); 
+      }
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   useEffect(() => {
     const alreadyShown = localStorage.getItem("supportShown");
@@ -15,208 +34,267 @@ export default function VestelNavbar() {
     }
   }, []);
 
-  /* ---------------- MEGA MENU DATA ---------------- */
   const categories = {
     Mobiles: [
-      { name: "Smartphones", img: "https://images.unsplash.com/photo-1535303311164-664fc9ec6532?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D/300x200" },
-      { name: "Feature Phones", img: "https://images.unsplash.com/photo-1640936343842-268f9d87e764?q=80&w=847&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D/300x200" },
-      { name: "Accessories", img: "https://plus.unsplash.com/premium_photo-1679513691474-73102089c117?q=80&w=1113&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D/300x200" },
+      { name: "Smartphones", img: "https://images.unsplash.com/photo-1535303311164-664fc9ec6532?auto=format&fit=crop&w=300" },
+      { name: "Feature Phones", img: "https://images.unsplash.com/photo-1640936343842-268f9d87e764?auto=format&fit=crop&w=300" },
     ],
     Laptops: [
-      { name: "Gaming Laptops", img: "https://images.unsplash.com/photo-1641623410264-948701015656?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D/300x200" },
-      { name: "Ultrabooks", img: "https://images.unsplash.com/photo-1507470855518-469f3b3dad25?q=80&w=1205&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D/300x200" },
-      { name: "Student Laptops", img: "https://images.unsplash.com/photo-1507470855518-469f3b3dad25?q=80&w=1205&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D/300x200" },
-    ],
-    TVs: [
-      { name: "Smart TVs", img: "https://images.unsplash.com/photo-1646861039459-fd9e3aabf3fb?q=80&w=1026&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D/300x200" },
-      { name: "4K TVs", img: "https://images.unsplash.com/photo-1596405367208-63505402f113?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D/300x200" },
-      { name: "OLED TVs", img: "https://plus.unsplash.com/premium_photo-1683120912036-525c997c227d?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D/300x200" },
+      { name: "Gaming Laptops", img: "https://images.unsplash.com/photo-1641623410264-948701015656?auto=format&fit=crop&w=300" },
     ],
   };
 
   const brands = {
-    Apple: [
-      { name: "iPhone", img: "https://plus.unsplash.com/premium_photo-1680985551009-05107cd2752c?q=80&w=1332&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D/300x200" },
-      { name: "MacBook", img: "https://images.unsplash.com/photo-1562952306-d06754dbad10?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D/300x200" },
-      { name: "iPad", img: "https://images.unsplash.com/photo-1589739900869-082b93d8f224?q=80&w=696&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D/300x200" },
-    ],
-    Samsung: [
-      { name: "Galaxy Phones", img: "https://images.unsplash.com/photo-1721864429261-3059e48c056b?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D/300x200" },
-      { name: "Samsung TVs", img: "https://images.unsplash.com/photo-1721864429261-3059e48c056b?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D/300x200" },
-      { name: "Appliances", img: "https://images.unsplash.com/photo-1758631130778-42d518bf13aa?q=80&w=1933&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D/300x200" },
-    ],
-    Sony: [
-      { name: "PlayStation", img: "https://images.unsplash.com/photo-1607853202273-797f1c22a38e?q=80&w=627&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D/300x200" },
-      { name: "Sony TVs", img: "https://images.unsplash.com/photo-1607853202273-797f1c22a38e?q=80&w=627&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D/300x200" },
-      { name: "Headphones", img: "https://images.unsplash.com/photo-1607853202273-797f1c22a38e?q=80&w=627&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D/300x200" },
-    ],
+    Apple: [{ name: "iPhone", img: "https://plus.unsplash.com/premium_photo-1680985551009-05107cd2752c?auto=format&fit=crop&w=300" }],
+    Samsung: [{ name: "Galaxy Phones", img: "https://images.unsplash.com/photo-1721864429261-3059e48c056b?auto=format&fit=crop&w=300" }],
   };
 
   return (
     <>
-      <header className="w-full bg-white border-b border-gray-200 z-50 relative">
-        {/* ================= MAIN NAVBAR ================= */}
-        <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-          <div className="text-red-600 font-bold text-4xl tracking-tight select-none">
-            SENSE
+      <header 
+        className={`sticky top-0 w-full z-[100] transition-all duration-500 ease-in-out ${
+          scrolled 
+            ? "bg-white/90 backdrop-blur-lg shadow-xl border-b border-gray-100" 
+            : "bg-white"
+        }`}
+      >
+        {/* ================= TOP BAR ================= */}
+        <div 
+          className={`max-w-7xl mx-auto px-4 md:px-6 flex items-center justify-between transition-all duration-500 ${
+            scrolled ? "h-16 md:h-20" : "h-16 md:h-24"
+          }`}
+        >
+          <div className="flex items-center gap-4">
+            <button 
+              onClick={() => setIsMobileMenuOpen(true)}
+              className="xl:hidden group p-2 -ml-2 flex flex-col gap-1.5 items-start justify-center relative z-[110]"
+            >
+              <span className="w-6 h-[2px] bg-black rounded-full transition-all group-hover:w-4"></span>
+              <span className="w-4 h-[2px] bg-red-600 rounded-full"></span>
+              <span className="w-6 h-[2px] bg-black rounded-full transition-all group-hover:w-4"></span>
+            </button>
+
+            <div className="text-red-600 font-black text-2xl md:text-4xl tracking-tighter select-none">
+              SENSE
+            </div>
           </div>
 
-          <nav className="hidden xl:flex items-center space-x-10 text-[17px] text-gray-900">
-            <a href="#" className="hover:text-red-600 transition">Home</a>
-            <span className="text-gray-300">|</span>
-            <a href="#" className="hover:text-red-600 transition">Shop</a>
-            <span className="text-gray-300">|</span>
-            <a href="#" className="hover:text-red-600 transition">Sustainability</a>
-            <span className="text-gray-300">|</span>
-            <a href="#" className="hover:text-red-600 transition">About Us</a>
+          {/* Desktop Nav Items */}
+          <nav className="hidden xl:flex items-center space-x-12 text-[15px] font-bold uppercase tracking-widest text-gray-800">
+            <NavItem label="Home" />
+            <NavItem label="Shop" />
+            <NavItem label="Sustainability" />
+            <NavItem label="About Us" />
           </nav>
 
-          <div className="flex items-center gap-6">
+          <div className="flex items-center gap-4">
+            {scrolled && (
+               <button 
+                onClick={() => setIsSubNavOpen(!isSubNavOpen)}
+                className="hidden xl:flex items-center gap-1 text-[10px] font-black uppercase tracking-widest text-gray-400 hover:text-red-600 transition-all group"
+               >
+                 Explore
+                 <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${isSubNavOpen ? "rotate-180 text-red-600" : ""}`} />
+               </button>
+            )}
+
             <button
               onClick={() => setOpenSupport(true)}
-              className="flex items-center gap-2 border px-3 py-2 text-black text-[15px] hover:bg-gray-50 transition rounded-md"
+              className="hidden sm:flex items-center gap-2 border-2 border-gray-100 px-5 py-2.5 rounded-full text-[13px] font-bold uppercase tracking-wider hover:border-red-600 hover:text-red-600 transition-all duration-300"
             >
-              <span className="text-red-600 text-lg">💬</span> Support
+              Support
             </button>
+            
+            <div className="flex items-center gap-3 md:gap-6 ml-2">
+              {/* Account Dropdown - Theme Updated */}
+              <div className="relative" onMouseEnter={() => setOpenProfile(true)} onMouseLeave={() => setOpenProfile(false)}>
+                <button className={`p-2 rounded-full transition-all duration-300 ${openProfile ? "bg-black text-white" : "hover:bg-gray-100 text-gray-800"}`}>
+                  <User className="w-6 h-6 transition-colors" />
+                </button>
+                {openProfile && (
+                  <div className="absolute right-0 top-full pt-2 w-56 animate-in fade-in zoom-in-95 duration-200 z-[120]">
+                    <div className="bg-white rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.15)] border border-gray-100 overflow-hidden py-2 px-1">
+                      <ProfileItem icon={<LogIn size={16}/>} label="Sign In" />
+                      <ProfileItem icon={<Settings size={16}/>} label="Manage Account" />
+                      <hr className="my-2 border-gray-50" />
+                      <ProfileItem icon={<LogOut size={16}/>} label="Sign Out" color="text-red-600 hover:bg-red-50" />
+                    </div>
+                  </div>
+                )}
+              </div>
 
-            <button className="flex items-center gap-2 border px-3 py-2 text-black rounded-3xl text-[15px] hover:bg-gray-50 transition">
-              <span className="text-red-600 text-lg">📞</span> Call
-            </button>
-
-            <div className="hidden xl:grid grid-cols-3 gap-1 cursor-pointer">
-              {Array(9).fill(0).map((_, i) => (
-                <div key={i} className="w-2 h-2 bg-red-600 rounded-full" />
-              ))}
+              <div className="relative cursor-pointer group p-2 hover:bg-gray-100 rounded-full transition-colors">
+                <ShoppingCart className="w-6 h-6 text-gray-800 group-hover:text-red-600 transition-colors" />
+                <span className="absolute top-1 right-1 bg-red-600 text-white text-[10px] font-bold h-4 w-4 rounded-full flex items-center justify-center">0</span>
+              </div>
             </div>
-
-            <button className="xl:hidden">
-              <Menu className="w-7 h-7 text-red-600" />
-            </button>
           </div>
         </div>
 
-        {/* ================= SUB NAVBAR ================= */}
-        <div className="w-full bg-white border-t shadow-sm">
-          <div className="max-w-7xl mx-auto px-4">
-            <div className="flex items-center justify-between h-14">
-              <div className="flex items-center gap-6">
-                <button
-                  onMouseEnter={() => {
-                    setOpenMega("category");
-                    setActiveItem(Object.keys(categories)[0]);
-                  }}
-                  className="hidden md:flex items-center gap-1 text-black font-medium hover:text-indigo-600"
-                >
-                  Categories <ChevronDown size={16} />
-                </button>
+        {/* ================= SUB NAVBAR - Theme Updated ================= */}
+        <div className={`hidden xl:block w-full transition-all duration-500 ease-in-out bg-white border-y border-gray-100 overflow-hidden ${
+          (!scrolled || isSubNavOpen) 
+            ? "max-h-24 opacity-100" 
+            : "max-h-0 opacity-0 border-none"
+        }`}>
+          <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between gap-10">
+            <div className="flex items-center gap-10">
+              <button
+                onMouseEnter={() => { setOpenMega("category"); setActiveItem(Object.keys(categories)[0]); }}
+                className="flex items-center gap-2 text-[11px] font-black uppercase tracking-[0.2em] text-gray-500 hover:text-red-600 transition"
+              >
+                Categories <ChevronDown size={14} />
+              </button>
+              <button
+                onMouseEnter={() => { setOpenMega("brand"); setActiveItem(Object.keys(brands)[0]); }}
+                className="flex items-center gap-2 text-[11px] font-black uppercase tracking-[0.2em] text-gray-500 hover:text-red-600 transition"
+              >
+                Brands <ChevronDown size={14} />
+              </button>
+            </div>
 
-                <button
-                  onMouseEnter={() => {
-                    setOpenMega("brand");
-                    setActiveItem(Object.keys(brands)[0]);
-                  }}
-                  className="hidden md:flex items-center gap-1 text-black font-medium hover:text-indigo-600"
-                >
-                  Brands <ChevronDown size={16} />
-                </button>
+            <div className="flex-1 max-w-lg relative group">
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 group-focus-within:text-red-600 transition-colors" />
+              <input 
+                type="text" 
+                placeholder="Search products..." 
+                className="w-full bg-gray-50 border-2 border-transparent py-3 pl-11 pr-4 rounded-xl text-xs font-bold uppercase tracking-widest outline-none transition-all duration-300 focus:bg-white focus:border-red-600 shadow-sm"
+              />
+            </div>
+
+            <div className="text-[11px] font-black text-red-600 bg-red-50 px-4 py-2 rounded-lg tracking-[0.2em] uppercase">
+              Free Shipping on $100+
+            </div>
+          </div>
+        </div>
+
+        {/* ================= MEGA MENU - Theme Updated ================= */}
+        {openMega && (
+          <div
+            onMouseLeave={() => setOpenMega(null)}
+            className="hidden xl:block absolute w-full bg-white shadow-2xl border-t z-40 animate-in fade-in slide-in-from-top-1 duration-300"
+          >
+            <div className="max-w-7xl mx-auto grid grid-cols-12 min-h-[380px]">
+              {/* Sidebar with Black Theme */}
+              <div className="col-span-3 border-r border-gray-100 p-6 bg-black flex flex-col gap-2">
+                {Object.keys(openMega === "category" ? categories : brands).map((key) => (
+                  <div
+                    key={key}
+                    onMouseEnter={() => setActiveItem(key)}
+                    className={`p-4 rounded-xl cursor-pointer font-black text-xs uppercase tracking-widest transition-all duration-300 ${
+                      activeItem === key ? "bg-red-600 text-white translate-x-3 shadow-lg" : "text-gray-400 hover:text-white"
+                    }`}
+                  >
+                    {key}
+                  </div>
+                ))}
               </div>
-
-              <div className="hidden md:flex flex-1 justify-center">
-                <div className="relative w-full max-w-md">
-                  <Search
-                    className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
-                    size={18}
-                  />
-                  <input
-                    type="text"
-                    placeholder="Search products..."
-                    className="w-full pl-10 pr-4 py-2 rounded-full text-black border focus:ring-2 focus:ring-indigo-500"
-                  />
-                </div>
-              </div>
-
-              <div className="flex items-center gap-4">
-                <span className="hidden md:block font-medium text-black">
-                  Offers
-                </span>
-                <ShoppingCart />
+              {/* Content Grid */}
+              <div className="col-span-9 p-10 grid grid-cols-3 gap-10">
+                {(openMega === "category" ? categories[activeItem] : brands[activeItem])?.map((item) => (
+                  <div key={item.name} className="group cursor-pointer">
+                    <div className="overflow-hidden rounded-3xl bg-gray-100 aspect-[4/3] relative border border-transparent group-hover:border-red-100 group-hover:shadow-xl transition-all duration-500">
+                      <img src={item.img} alt={item.name} className="w-full h-full object-cover group-hover:scale-110 transition duration-700" />
+                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-all duration-500" />
+                    </div>
+                    <p className="mt-5 font-black text-gray-900 group-hover:text-red-600 transition uppercase text-[10px] tracking-[0.2em]">{item.name}</p>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
+        )}
 
-          {/* ================= MEGA MENU PANEL ================= */}
-          {openMega && (
-            <div
-              onMouseLeave={() => setOpenMega(null)}
-              className="absolute w-full bg-white shadow-xl border-t z-40"
-            >
-              <div className="max-w-7xl mx-auto grid grid-cols-12">
-                <div className="col-span-3 border-r p-4 bg-gray-50 text-black space-y-2">
-                  {Object.keys(openMega === "category" ? categories : brands).map(
-                    (key) => (
-                      <div
-                        key={key}
-                        onMouseEnter={() => setActiveItem(key)}
-                        className={`p-3 rounded-lg cursor-pointer font-semibold ${
-                          activeItem === key
-                            ? "bg-indigo-600 text-white"
-                            : "hover:bg-indigo-100"
-                        }`}
-                      >
-                        {key}
-                      </div>
-                    )
+        {/* ================= MOBILE SIDEBAR ================= */}
+        <div className={`fixed inset-0 z-[200] transition-opacity duration-500 ${isMobileMenuOpen ? "opacity-100" : "opacity-0 pointer-events-none"}`}>
+          <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setIsMobileMenuOpen(false)} />
+          <div className={`absolute top-0 left-0 w-[85%] max-w-xs h-full bg-white transition-transform duration-500 ease-out transform shadow-2xl ${isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"}`}>
+            <div className="p-8 flex flex-col h-full overflow-y-auto">
+              <div className="flex justify-between items-center mb-6">
+                <span className="text-red-600 font-black text-2xl tracking-tighter">SENSE</span>
+                <button onClick={() => setIsMobileMenuOpen(false)} className="p-2 hover:bg-gray-100 rounded-full transition-colors"><X size={24}/></button>
+              </div>
+
+              <div className="relative mb-8">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                <input type="text" placeholder="Search..." className="w-full bg-gray-100 py-3 pl-10 pr-4 rounded-xl text-sm" />
+              </div>
+
+              <div className="space-y-6 flex-1">
+                <a href="#" className="block text-2xl font-black text-gray-900">Home</a>
+                <a href="#" className="block text-2xl font-black text-gray-900">Shop</a>
+                
+                <div className="pt-4 border-t border-gray-100">
+                  <button onClick={() => setMobileSection(mobileSection === 'cat' ? null : 'cat')} className="w-full flex justify-between items-center py-2 text-sm font-bold uppercase tracking-widest text-gray-500">
+                    Categories <ChevronRight size={18} className={`transition-transform duration-300 ${mobileSection === 'cat' ? 'rotate-90 text-red-600' : ''}`} />
+                  </button>
+                  {mobileSection === 'cat' && (
+                    <div className="pl-2 mt-4 space-y-4 animate-in slide-in-from-left-2">
+                      {Object.keys(categories).map(cat => <a key={cat} href="#" className="block text-lg font-bold text-gray-800 hover:text-red-600 transition-colors">{cat}</a>)}
+                    </div>
                   )}
                 </div>
 
-                <div className="col-span-9 p-6 grid grid-cols-2 text-black md:grid-cols-3 gap-6">
-                  {(openMega === "category"
-                    ? categories[activeItem]
-                    : brands[activeItem]
-                  )?.map((item) => (
-                    <div
-                      key={item.name}
-                      className="rounded-xl border p-4 text-center hover:shadow-lg transition"
-                    >
-                      <img
-                        src={item.img}
-                        alt={item.name}
-                        className="w-full h-32 object-cover rounded-lg"
-                      />
-                      <p className="mt-3 font-semibold">{item.name}</p>
+                <div className="pt-4 border-t border-gray-100">
+                  <button onClick={() => setMobileSection(mobileSection === 'brand' ? null : 'brand')} className="w-full flex justify-between items-center py-2 text-sm font-bold uppercase tracking-widest text-gray-500">
+                    Brands <ChevronRight size={18} className={`transition-transform duration-300 ${mobileSection === 'brand' ? 'rotate-90 text-red-600' : ''}`} />
+                  </button>
+                  {mobileSection === 'brand' && (
+                    <div className="pl-2 mt-4 space-y-4 animate-in slide-in-from-left-2">
+                      {Object.keys(brands).map(brand => <a key={brand} href="#" className="block text-lg font-bold text-gray-800 hover:text-red-600 transition-colors">{brand}</a>)}
                     </div>
-                  ))}
+                  )}
                 </div>
+
+                <a href="#" className="block text-2xl font-black text-gray-900">Sustainability</a>
+                <a href="#" className="block text-2xl font-black text-gray-900">About Us</a>
+              </div>
+
+              <div className="mt-10 pt-8 border-t border-gray-100 flex gap-4">
+                <button className="flex-1 py-4 bg-gray-900 text-white rounded-2xl flex flex-col items-center gap-1">
+                  <Phone size={18} />
+                  <span className="text-[10px] font-bold uppercase tracking-wider">Call</span>
+                </button>
+                <button onClick={() => { setIsMobileMenuOpen(false); setOpenSupport(true); }} className="flex-1 py-4 bg-red-600 text-white rounded-2xl flex flex-col items-center gap-1">
+                  <MessageSquare size={18} />
+                  <span className="text-[10px] font-bold uppercase tracking-wider">Help</span>
+                </button>
               </div>
             </div>
-          )}
+          </div>
         </div>
       </header>
 
       {/* ================= SUPPORT MODAL ================= */}
       {openSupport && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm"
-          onClick={() => setOpenSupport(false)}
-        >
-          <div
-            onClick={(e) => e.stopPropagation()}
-            className="bg-white w-[95%] max-w-3xl max-h-[90vh] overflow-y-auto rounded-2xl shadow-xl p-6"
-          >
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="text-xl font-semibold text-gray-800">Support</h2>
-              <button
-                onClick={() => setOpenSupport(false)}
-                className="p-2 hover:bg-gray-100 rounded-full"
-              >
-                <X className="w-6 h-6 text-gray-500" />
-              </button>
+        <div className="fixed inset-0 z-[210] flex items-center justify-center bg-black/70 backdrop-blur-md px-4 p-4 animate-in fade-in duration-300" onClick={() => setOpenSupport(false)}>
+          <div onClick={(e) => e.stopPropagation()} className="bg-white w-full max-w-2xl max-h-[90vh] overflow-hidden rounded-[40px] shadow-2xl flex flex-col">
+            <div className="p-8 border-b flex justify-between items-center bg-white">
+              <h2 className="text-3xl font-black text-gray-900 tracking-tight uppercase">Support</h2>
+              <button onClick={() => setOpenSupport(false)} className="p-3 bg-gray-100 hover:bg-red-50 hover:text-red-600 rounded-full transition-all"><X size={20} /></button>
             </div>
-
-            <Support />
+            <div className="overflow-y-auto p-8 flex-1"><Support /></div>
           </div>
         </div>
       )}
     </>
+  );
+}
+
+function NavItem({ label }) {
+  return (
+    <a href="#" className="relative group py-2">
+      <span className="group-hover:text-red-600 transition-colors duration-300 tracking-widest">{label}</span>
+      <span className="absolute bottom-0 left-1/2 w-0 h-[2px] bg-red-600 transition-all duration-300 ease-out group-hover:w-full group-hover:left-0"></span>
+    </a>
+  );
+}
+
+function ProfileItem({ icon, label, color = "text-gray-900 hover:bg-gray-100" }) {
+  return (
+    <a href="#" className={`flex items-center gap-3 px-4 py-3.5 text-[11px] font-black uppercase tracking-widest rounded-xl transition-all duration-300 ${color}`}>
+      {icon}
+      {label}
+    </a>
   );
 }
