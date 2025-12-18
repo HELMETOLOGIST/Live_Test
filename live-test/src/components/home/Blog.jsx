@@ -44,7 +44,6 @@ export default function SenseBlog() {
     image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=800"
   });
 
-  // Prevent background scroll when modal is open
   useEffect(() => {
     if (selectedPost || isEditorOpen) {
       document.body.style.overflow = 'hidden';
@@ -74,23 +73,40 @@ export default function SenseBlog() {
     <div className="bg-white min-h-screen py-12 md:py-24 px-4 md:px-6 relative overflow-x-hidden">
       <div className="max-w-7xl mx-auto">
         
-        {/* ================= HEADER ================= */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-8">
-          <motion.div 
-            initial={{ opacity: 0, x: -30 }}
-            animate={{ opacity: 1, x: 0 }}
-            className="space-y-4"
+        {/* ================= UPDATED HEADER (SENSE THEME) ================= */}
+        <div className="flex flex-col items-center text-center space-y-2 mb-16">
+          <motion.span 
+            initial={{ opacity: 0, letterSpacing: "0.1em" }}
+            whileInView={{ opacity: 1, letterSpacing: "0.4em" }}
+            viewport={{ once: true }}
+            transition={{ duration: 1 }}
+            className="text-red-600 font-black text-xs uppercase tracking-[0.4em]"
           >
-            <span className="text-red-600 font-black text-xs uppercase tracking-[0.4em]">Knowledge Base</span>
-            <h2 className="text-5xl md:text-7xl font-black text-gray-900 tracking-tighter uppercase leading-none">
-              Technical <br /> <span className="text-gray-200">Insights.</span>
-            </h2>
-          </motion.div>
+            Knowledge Base
+          </motion.span>
+          
+          <h2 className="text-5xl md:text-7xl font-black text-gray-900 tracking-tighter uppercase leading-none">
+            Technical <span className="text-red-600">Insights</span>
+          </h2>
 
-          <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}>
+          <motion.div 
+            initial={{ width: 0 }}
+            whileInView={{ width: 80 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1, delay: 0.5, ease: "circOut" }}
+            className="h-1.5 bg-red-600 mt-6 rounded-full" 
+          />
+          
+          {/* Create Log Button Positioned Below Header for Center Flow */}
+          <motion.div 
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.8 }}
+            className="mt-10"
+          >
             <button 
               onClick={() => setIsEditorOpen(true)}
-              className="w-full md:w-auto flex items-center justify-center gap-2 bg-black text-white px-8 py-5 rounded-2xl text-[11px] font-black uppercase tracking-widest hover:bg-red-600 transition-all shadow-xl active:scale-95"
+              className="flex items-center gap-2 bg-black text-white px-8 py-5 rounded-2xl text-[11px] font-black uppercase tracking-widest hover:bg-red-600 transition-all shadow-xl active:scale-95"
             >
               <Plus size={18} /> Create Log
             </button>
@@ -173,8 +189,6 @@ export default function SenseBlog() {
               transition={{ type: "spring", damping: 25, stiffness: 300 }}
               className="bg-white w-full h-full md:max-w-7xl md:rounded-[48px] overflow-hidden flex flex-col md:flex-row shadow-2xl"
             >
-              
-              {/* Editor Sidebar - Original Style */}
               <motion.div 
                 initial={{ x: -100, opacity: 0 }}
                 animate={{ x: 0, opacity: 1 }}
@@ -217,7 +231,6 @@ export default function SenseBlog() {
                 </button>
               </motion.div>
 
-              {/* Writing Area - Original Style */}
               <div className="flex-1 p-8 md:p-16 overflow-y-auto">
                 <form onSubmit={handlePublish} className="space-y-8 max-w-4xl mx-auto">
                   <motion.input 
@@ -272,7 +285,7 @@ export default function SenseBlog() {
         )}
       </AnimatePresence>
 
-      {/* ================= VIEW POST MODAL - Original Style ================= */}
+      {/* ================= VIEW POST MODAL ================= */}
       <AnimatePresence>
         {selectedPost && (
           <motion.div 

@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
   Lock, Mail, ArrowRight, ShieldCheck, 
-  User, HardDrive, Key, CheckCircle2,
-  Github, Chrome, Loader2, Fingerprint
+  CheckCircle2, Github, Chrome, Loader2, Fingerprint
 } from "lucide-react";
+import { useToast } from "../../context/ToastContext"; // 1. Import the hook
 
 // Animation Variants
 const fadeInUp = {
@@ -26,6 +26,7 @@ const staggerContainer = {
 
 export default function SignupPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const { showToast } = useToast(); // 2. Initialize toast
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -40,8 +41,20 @@ export default function SignupPage() {
 
   const handleRegister = (e) => {
     e.preventDefault();
+    
+    // 3. Validation Logic for Toast
+    if (formData.password !== formData.confirmPassword) {
+      showToast("error", "Cipher Mismatch: Security keys do not align.");
+      return;
+    }
+
     setIsSubmitting(true);
-    setTimeout(() => setIsSubmitting(false), 2000);
+
+    // Simulate Auth Protocol
+    setTimeout(() => {
+      setIsSubmitting(false);
+      showToast("success", "Operator Registry Complete. Welcome to SENSE.");
+    }, 2000);
   };
 
   return (
@@ -84,11 +97,17 @@ export default function SignupPage() {
                 Direct Satellite Connection
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <button className="flex items-center justify-center gap-3 bg-white border border-gray-200 py-4 px-6 rounded-2xl hover:border-red-600 hover:shadow-lg hover:shadow-red-50 transition-all group">
+                <button 
+                  onClick={() => showToast("success", "Establishing Google ID Handshake...")}
+                  className="flex items-center justify-center gap-3 bg-white border border-gray-200 py-4 px-6 rounded-2xl hover:border-red-600 hover:shadow-lg hover:shadow-red-50 transition-all group"
+                >
                   <Chrome size={18} className="text-gray-400 group-hover:text-red-600 transition-colors" />
                   <span className="text-xs font-black uppercase tracking-wider">Google ID</span>
                 </button>
-                <button className="flex items-center justify-center gap-3 bg-white border border-gray-200 py-4 px-6 rounded-2xl hover:border-black hover:shadow-lg hover:shadow-gray-100 transition-all group">
+                <button 
+                  onClick={() => showToast("success", "Syncing with GitHub Repositories...")}
+                  className="flex items-center justify-center gap-3 bg-white border border-gray-200 py-4 px-6 rounded-2xl hover:border-black hover:shadow-lg hover:shadow-gray-100 transition-all group"
+                >
                   <Github size={18} className="text-gray-400 group-hover:text-black transition-colors" />
                   <span className="text-xs font-black uppercase tracking-wider">GitHub ID</span>
                 </button>
@@ -107,16 +126,16 @@ export default function SignupPage() {
                 <div className="space-y-2">
                   <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest px-1">First Name</label>
                   <input 
-                    type="text" name="firstName" placeholder="JOHN"
-                    className="w-full bg-white border border-gray-200 rounded-[22px] p-4 text-sm font-bold focus:outline-none focus:ring-4 focus:ring-red-50 focus:border-red-600 transition-all placeholder:text-gray-200"
+                    type="text" name="firstName" placeholder="JOHN" required
+                    className="w-full bg-white border border-gray-200 rounded-[22px] p-4 text-sm font-bold focus:outline-none focus:ring-4 focus:ring-red-50 focus:border-red-600 transition-all placeholder:text-gray-200 uppercase"
                     onChange={handleChange}
                   />
                 </div>
                 <div className="space-y-2">
                   <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest px-1">Last Name</label>
                   <input 
-                    type="text" name="lastName" placeholder="DOE"
-                    className="w-full bg-white border border-gray-200 rounded-[22px] p-4 text-sm font-bold focus:outline-none focus:ring-4 focus:ring-red-50 focus:border-red-600 transition-all placeholder:text-gray-200"
+                    type="text" name="lastName" placeholder="DOE" required
+                    className="w-full bg-white border border-gray-200 rounded-[22px] p-4 text-sm font-bold focus:outline-none focus:ring-4 focus:ring-red-50 focus:border-red-600 transition-all placeholder:text-gray-200 uppercase"
                     onChange={handleChange}
                   />
                 </div>
@@ -128,7 +147,7 @@ export default function SignupPage() {
                 <div className="relative group">
                   <Mail className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-red-600 transition-colors" size={18} />
                   <input 
-                    type="email" name="email" placeholder="OPERATOR@SENSE.IO"
+                    type="email" name="email" placeholder="OPERATOR@SENSE.IO" required
                     className="w-full bg-white border border-gray-200 rounded-[22px] py-4 pl-14 pr-6 text-sm font-bold focus:outline-none focus:ring-4 focus:ring-red-50 focus:border-red-600 transition-all placeholder:text-gray-200"
                     onChange={handleChange}
                   />
@@ -140,7 +159,7 @@ export default function SignupPage() {
                 <div className="space-y-2">
                   <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest px-1">Security Cipher</label>
                   <input 
-                    type="password" name="password" placeholder="••••••••"
+                    type="password" name="password" placeholder="••••••••" required
                     className="w-full bg-white border border-gray-200 rounded-[22px] p-4 text-sm font-bold focus:outline-none focus:ring-4 focus:ring-red-50 focus:border-red-600 transition-all"
                     onChange={handleChange}
                   />
@@ -148,7 +167,7 @@ export default function SignupPage() {
                 <div className="space-y-2">
                   <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest px-1">Verify Cipher</label>
                   <input 
-                    type="password" name="confirmPassword" placeholder="••••••••"
+                    type="password" name="confirmPassword" placeholder="••••••••" required
                     className="w-full bg-white border border-gray-200 rounded-[22px] p-4 text-sm font-bold focus:outline-none focus:ring-4 focus:ring-red-50 focus:border-red-600 transition-all"
                     onChange={handleChange}
                   />
@@ -158,13 +177,17 @@ export default function SignupPage() {
               {/* ACTION BUTTON */}
               <div className="pt-6">
                 <motion.button
+                  type="submit"
                   disabled={isSubmitting}
                   whileHover={{ scale: 1.01 }}
                   whileTap={{ scale: 0.98 }}
                   className="w-full bg-black text-white py-6 rounded-[28px] flex items-center justify-center gap-3 relative overflow-hidden group shadow-xl shadow-gray-300 transition-all"
                 >
                   {isSubmitting ? (
-                    <Loader2 size={20} className="animate-spin text-red-600" />
+                    <div className="flex items-center gap-2">
+                      <Loader2 size={20} className="animate-spin text-red-600" />
+                      <span className="font-black uppercase text-xs tracking-[0.2em]">Enlisting...</span>
+                    </div>
                   ) : (
                     <>
                       <span className="font-black uppercase text-xs tracking-[0.2em]">Authorize & Enlist</span>

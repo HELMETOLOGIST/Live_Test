@@ -5,6 +5,7 @@ import {
   HardDrive, Cpu, AlertCircle, Fingerprint,
   Loader2
 } from "lucide-react";
+import { useToast } from "../../../src/context/ToastContext"; // 1. Import the hook
 
 // Animation Variants
 const fadeInUp = {
@@ -28,12 +29,24 @@ export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isAuthenticating, setIsAuthenticating] = useState(false);
+  const { showToast } = useToast(); // 2. Initialize toast
 
   const handleLogin = (e) => {
     e.preventDefault();
     setIsAuthenticating(true);
-    // Simulate auth logic
-    setTimeout(() => setIsAuthenticating(false), 2000);
+
+    // Simulate Auth Logic
+    setTimeout(() => {
+      setIsAuthenticating(false);
+      
+      // 3. Logic for Success / Error Toasts
+      if (email === "admin@sense.com" && password === "1234") {
+        showToast("success", "Biometric Identity Confirmed. Welcome back, Operator.");
+        // navigate("/dashboard"); // Uncomment if using router
+      } else {
+        showToast("error", "Security Breach: Invalid Cipher or Identifier.");
+      }
+    }, 2000);
   };
 
   return (
@@ -81,8 +94,8 @@ export default function LoginPage() {
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="w-full bg-white border border-gray-200 rounded-[24px] py-5 pl-14 pr-6 text-sm font-bold focus:outline-none focus:ring-4 focus:ring-red-50 focus:border-red-600 transition-all placeholder:text-gray-300"
-                    placeholder="OPERATOR@VESTO.IO"
+                    className="w-full bg-white border border-gray-200 rounded-[24px] py-5 pl-14 pr-6 text-sm font-bold focus:outline-none focus:ring-4 focus:ring-red-50 focus:border-red-600 transition-all placeholder:text-gray-300 uppercase"
+                    placeholder="OPERATOR@SENSE.IO"
                   />
                 </div>
               </div>
@@ -109,13 +122,17 @@ export default function LoginPage() {
 
             {/* ACTION BUTTON */}
             <motion.button
+              type="submit"
               disabled={isAuthenticating}
               whileHover={{ scale: 1.01 }}
               whileTap={{ scale: 0.98 }}
               className="w-full bg-black text-white py-6 rounded-[28px] flex items-center justify-center gap-3 relative overflow-hidden group shadow-xl shadow-gray-300 transition-all"
             >
               {isAuthenticating ? (
-                <Loader2 size={20} className="animate-spin text-red-600" />
+                <div className="flex items-center gap-3">
+                   <Loader2 size={20} className="animate-spin text-red-600" />
+                   <span className="font-black uppercase text-xs tracking-[0.2em]">Verifying Identity...</span>
+                </div>
               ) : (
                 <>
                   <span className="font-black uppercase text-xs tracking-[0.2em]">Initiate Session</span>

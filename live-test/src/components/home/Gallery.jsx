@@ -22,27 +22,37 @@ export default function SenseGallery() {
     <div className="bg-white min-h-screen py-24 px-6 overflow-hidden">
       <div className="max-w-7xl mx-auto">
         
-        {/* ================= HEADER ================= */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-8">
-          <motion.div 
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
+        {/* ================= UPDATED HEADER (SENSE THEME) ================= */}
+        <div className="flex flex-col items-center text-center space-y-2 mb-16">
+          <motion.span 
+            initial={{ opacity: 0, letterSpacing: "0.1em" }}
+            whileInView={{ opacity: 1, letterSpacing: "0.4em" }}
             viewport={{ once: true }}
-            className="space-y-4"
+            transition={{ duration: 1, delay: 0.2 }}
+            className="text-red-600 font-black text-[10px] md:text-xs uppercase tracking-[0.4em]"
           >
-            <span className="text-red-600 font-black text-xs uppercase tracking-[0.4em]">
-              Visual Inventory
-            </span>
-            <h2 className="text-5xl md:text-7xl font-black text-gray-900 tracking-tighter uppercase leading-none">
-              The <br /> <span className="text-gray-200">Blueprint.</span>
-            </h2>
-          </motion.div>
+            Visual Inventory
+          </motion.span>
+          
+          <h2 className="text-4xl md:text-7xl font-black text-gray-900 tracking-tighter uppercase leading-none">
+            The <span className="text-red-600">Blueprint</span>
+          </h2>
 
-          {/* SENSE Industrial Filter Toggle */}
+          <motion.div 
+            initial={{ width: 0 }}
+            whileInView={{ width: 80 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1, delay: 0.5, ease: "circOut" }}
+            className="h-1.5 bg-red-600 mt-6 rounded-full" 
+          />
+        </div>
+
+        {/* CENTERED FILTER TOGGLE */}
+        <div className="flex justify-center mb-16">
           <motion.div 
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
-            className="flex flex-wrap gap-2 bg-gray-50 p-2 rounded-[24px] border border-gray-100 relative"
+            className="flex flex-wrap justify-center gap-2 bg-gray-50 p-2 rounded-[24px] border border-gray-100 relative"
           >
             {categories.map((cat) => (
               <button
@@ -52,11 +62,11 @@ export default function SenseGallery() {
                   filter === cat ? "text-white" : "text-gray-400 hover:text-gray-900"
                 }`}
               >
-                {cat}
+                <span className="relative z-10">{cat}</span>
                 {filter === cat && (
                   <motion.div
                     layoutId="galleryTab"
-                    className="absolute inset-0 bg-black rounded-[18px] shadow-xl -z-10"
+                    className="absolute inset-0 bg-black rounded-[18px] shadow-xl"
                     transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                   />
                 )}
@@ -182,13 +192,13 @@ export default function SenseGallery() {
                   transition={{ delay: 0.4 }}
                   className="p-6 bg-red-600 rounded-[24px] text-white"
                 >
-                   <div className="flex items-center gap-3 mb-2">
-                      <Info size={18} />
-                      <span className="text-[10px] font-black uppercase tracking-[0.2em]">Application</span>
-                   </div>
-                   <p className="text-sm font-medium leading-relaxed opacity-90 italic">
-                     "Optimized for high-pressure industrial environments requiring maximum durability and precision tolerance."
-                   </p>
+                    <div className="flex items-center gap-3 mb-2">
+                       <Info size={18} />
+                       <span className="text-[10px] font-black uppercase tracking-[0.2em]">Application</span>
+                    </div>
+                    <p className="text-sm font-medium leading-relaxed opacity-90 italic">
+                      "Optimized for high-pressure industrial environments requiring maximum durability and precision tolerance."
+                    </p>
                 </motion.div>
 
                 <motion.button 

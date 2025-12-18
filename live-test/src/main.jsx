@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import App from "./App";
 import "./index.css"; // Tailwind CSS
+import { ToastProvider } from "./context/ToastContext";
 
 // ---- GitHub Pages 404 redirect fix ----
 const redirect = sessionStorage.redirect;
@@ -16,7 +17,9 @@ if (redirect && redirect !== window.location.pathname) {
 createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <BrowserRouter>
+    <ToastProvider>
       <App />
+    </ToastProvider>
     </BrowserRouter>
   </React.StrictMode>
 );

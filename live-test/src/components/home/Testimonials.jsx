@@ -10,7 +10,7 @@ const data = [
     subHeading: "Global Innovation Summit",
     year: "2024",
     description: "Recognized for pioneering sustainable hardware solutions and spare part longevity in the industrial sector. Our commitment to 100% recyclable components set a new industry benchmark.",
-    image: "https://images.unsplash.com/photo-1579975096123-2183a9e1d109?auto=format&fit=crop&w=800",
+    image: "https://images.axminstertools.com/axminstertools/aIHgZlGsbswqTM3H_home-tile-half-einhell-powertools-info.jpg?auto=format%2Ccompress&q=75&w=543",
     organization: "Industrial Tech Council",
   },
   {
@@ -20,7 +20,7 @@ const data = [
     subHeading: "Quality Management Systems",
     year: "2024",
     description: "SENSE maintains the highest international standards for quality management, ensuring every mechanical part meets rigorous durability and safety requirements.",
-    image: "https://images.unsplash.com/photo-1589152121516-f47373263ce3?auto=format&fit=crop&w=800",
+    image: "https://marketplace.canva.com/EAFlVDzb7sA/3/0/1600w/canva-white-gold-elegant-modern-certificate-of-participation-Qn4Rei141MM.jpg",
     organization: "TÜV SÜD Standard",
   },
   {
@@ -46,43 +46,52 @@ export default function Testimonials() {
     <div className="bg-white py-24 px-6 overflow-hidden">
       <div className="max-w-7xl mx-auto">
         
-        {/* ================= HEADER SECTION ================= */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-8">
-          <motion.div 
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
+        {/* ================= UPDATED HEADER SECTION (SENSE THEME) ================= */}
+        <div className="flex flex-col items-center text-center space-y-2 mb-16">
+          <motion.span 
+            initial={{ opacity: 0, letterSpacing: "0.1em" }}
+            whileInView={{ opacity: 1, letterSpacing: "0.4em" }}
             viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="space-y-4"
+            transition={{ duration: 1, delay: 0.2 }}
+            className="text-red-600 font-black text-[10px] md:text-xs uppercase tracking-[0.4em]"
           >
-            <span className="text-red-600 font-black text-xs uppercase tracking-[0.4em]">
-              Verification & Legacy
-            </span>
-            <h2 className="text-5xl md:text-7xl font-black text-gray-900 tracking-tighter uppercase leading-none">
-              Certified <br /> <span className="text-gray-200">Excellence.</span>
-            </h2>
-          </motion.div>
+            Verification & Legacy
+          </motion.span>
+          
+          <h2 className="text-4xl md:text-6xl font-black text-gray-900 tracking-tighter uppercase leading-none">
+            Certified <span className="text-red-600">Excellence</span>
+          </h2>
 
-          {/* SENSE Industrial Filter Toggle */}
+          <motion.div 
+            initial={{ width: 0 }}
+            whileInView={{ width: 80 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1, delay: 0.5, ease: "circOut" }}
+            className="h-1.5 bg-red-600 mt-6 rounded-full" 
+          />
+        </div>
+
+        {/* CENTERED FILTER TOGGLE */}
+        <div className="flex justify-center mb-16">
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="flex bg-gray-100 p-1.5 rounded-2xl border border-gray-200 overflow-x-auto no-scrollbar relative"
+            className="flex flex-wrap bg-gray-100 p-1.5 rounded-2xl border border-gray-200 gap-1"
           >
             {["all", "award", "certification", "video"].map((type) => (
               <button
                 key={type}
                 onClick={() => setFilter(type)}
-                className={`relative px-6 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest whitespace-nowrap transition-colors duration-300 z-10 ${
+                className={`relative px-6 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest transition-colors duration-300 z-10 ${
                   filter === type ? "text-white" : "text-gray-400 hover:text-gray-900"
                 }`}
               >
-                {type}s
+                <span className="relative z-10">{type}s</span>
                 {filter === type && (
                   <motion.div
                     layoutId="activeTab"
-                    className="absolute inset-0 bg-black rounded-xl shadow-lg -z-10"
+                    className="absolute inset-0 bg-black rounded-xl shadow-lg"
                     transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                   />
                 )}
@@ -118,15 +127,11 @@ export default function Testimonials() {
                   <div className="absolute inset-0 bg-black/10 group-hover:bg-black/40 transition-all duration-500" />
                   
                   {/* Dynamic Icon Overlay */}
-                  <motion.div 
-                    initial={{ scale: 0.8 }}
-                    whileHover={{ scale: 1.1 }}
-                    className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-2xl"
-                  >
+                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-2xl">
                     {item.type === "video" && <Play className="text-red-600 fill-red-600" size={24} />}
                     {item.type === "award" && <Award className="text-red-600" size={24} />}
                     {item.type === "certification" && <ShieldCheck className="text-red-600" size={24} />}
-                  </motion.div>
+                  </div>
                 </div>
 
                 {/* Text Content */}

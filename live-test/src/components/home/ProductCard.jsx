@@ -2,16 +2,28 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ShoppingCart, ArrowRight, ShieldCheck, Zap } from "lucide-react";
+import { useToast } from "../../context/ToastContext"; // Import your Toast Hook
 
-export default function ProductCard({ id, image, category, title, description, price, tag }) {
+export default function ProductCard({ product }) {
   const navigate = useNavigate();
+  const { showToast } = useToast();
 
-  // FIX: Added safety check to prevent crash if title is undefined
+  // Destructure from the product object passed from RecentlyViewed
+  const { id, image, category, name: title, description, price, tag } = product || {};
+
   const handleCardClick = () => {
     if (!id && !title) return; 
     const productId = id || title.toLowerCase().replace(/\s+/g, '-');
     navigate(`/product/${productId}`);
   };
+
+  const handleAddToCart = (e) => {
+    e.stopPropagation(); 
+    showToast("success", `ASSET_MOVED: ${title || 'Item'} added to secure cart.`);
+  };
+
+  // SENSE fallback image if the URL is blocked or broken
+  const fallbackImg = "https://images.unsplash.com/photo-1581092160562-40aa08e78837?q=80&w=400&auto=format&fit=crop";
 
   const cardVariants = {
     hidden: { opacity: 0, y: 20 },
@@ -35,11 +47,18 @@ export default function ProductCard({ id, image, category, title, description, p
       {/* IMAGE SECTION */}
       <div className="relative w-full aspect-square overflow-hidden rounded-[24px] bg-gray-50 border border-gray-50">
         <motion.img
-          src={image || "/placeholder-image.jpg"} // FIX: Added fallback image
+          src={image || fallbackImg} 
           alt={title}
           whileHover={{ scale: 1.1 }}
           transition={{ duration: 0.7, ease: "easeOut" }}
           className="w-full h-full object-cover"
+          // FIX: Triggers if image link is blocked by Amazon/Unsplash
+          onError={(e) => {
+            if (e.target.src !== fallbackImg) {
+              e.target.src = fallbackImg;
+              showToast("error", `MEDIA_ERR: Asset stream for ${title || 'unknown'} offline.`);
+            }
+          }}
         />
         
         <div className="absolute top-3 left-3 flex flex-col gap-2 z-10">
@@ -69,7 +88,7 @@ export default function ProductCard({ id, image, category, title, description, p
             {title || "Unnamed Asset"}
           </h3>
           <div className="flex flex-col items-end">
-            <span className="text-xl font-black text-gray-900 leading-none">{price || "$0.00"}</span>
+            <span className="text-xl font-black text-gray-900 leading-none">${price || "0.00"}</span>
             <span className="text-[10px] text-gray-400 font-bold uppercase mt-1 text-right">Incl. Tax</span>
           </div>
         </div>
@@ -91,10 +110,7 @@ export default function ProductCard({ id, image, category, title, description, p
           <motion.button 
             whileHover={{ scale: 1.02, backgroundColor: "#dc2626" }}
             whileTap={{ scale: 0.98 }}
-            onClick={(e) => {
-              e.stopPropagation(); 
-              console.log("Added:", title);
-            }}
+            onClick={handleAddToCart}
             className="group/btn w-full bg-gray-900 text-white py-4 rounded-2xl flex items-center justify-center gap-3 transition-all duration-300 shadow-lg shadow-gray-200"
           >
             <span className="text-xs font-black uppercase tracking-[0.2em]">Add to Cart</span>
