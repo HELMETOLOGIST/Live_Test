@@ -1,4 +1,5 @@
 import React from "react";
+import { motion } from "framer-motion";
 
 const brands = [
   { name: "Bosch", link: "/collections/bosch", img: "https://i.pinimg.com/1200x/7c/f6/d2/7cf6d264070388ddb957f7372ac0d0ae.jpg" },
@@ -13,74 +14,119 @@ const brands = [
 ];
 
 export default function BrandSlider() {
+  // Doubling the brands for a seamless loop
+  const duplicatedBrands = [...brands, ...brands];
+
   return (
     <div className="w-full bg-white py-16 md:py-24 overflow-hidden border-t border-gray-50">
-      {/* Title Section */}
-      <div className="max-w-7xl mx-auto px-6 mb-12">
+      
+      {/* ================= TITLE SECTION ================= */}
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+        className="max-w-7xl mx-auto px-6 mb-16"
+      >
         <div className="flex flex-col items-center text-center space-y-2">
-          <span className="text-red-600 font-black text-xs uppercase tracking-[0.3em]">
+          <motion.span 
+            initial={{ opacity: 0, letterSpacing: "0.1em" }}
+            whileInView={{ opacity: 1, letterSpacing: "0.4em" }}
+            transition={{ duration: 1, delay: 0.2 }}
+            className="text-red-600 font-black text-[10px] md:text-xs uppercase tracking-[0.4em]"
+          >
             Authorized Partner
-          </span>
-          <h2 className="text-4xl md:text-5xl font-black text-gray-900 tracking-tighter uppercase">
+          </motion.span>
+          <h2 className="text-4xl md:text-6xl font-black text-gray-900 tracking-tighter uppercase leading-none">
             Industry <span className="text-red-600">Giants</span>
           </h2>
-          <div className="w-20 h-1.5 bg-red-600 mt-4 rounded-full" />
+          <motion.div 
+            initial={{ width: 0 }}
+            whileInView={{ width: 80 }}
+            transition={{ duration: 1, delay: 0.5, ease: "circOut" }}
+            className="h-1.5 bg-red-600 mt-6 rounded-full" 
+          />
         </div>
-      </div>
+      </motion.div>
 
-      {/* Slider Container with Fade Edges */}
-      <div className="relative w-full group">
-        {/* Left Mask Overlay */}
-        <div className="absolute left-0 top-0 bottom-0 w-20 md:w-40 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none" />
+      {/* ================= SLIDER CONTAINER ================= */}
+      <div className="relative w-full">
+        {/* Edge Fades for Depth */}
+        <div className="absolute left-0 top-0 bottom-0 w-24 md:w-64 bg-gradient-to-r from-white via-white/80 to-transparent z-10 pointer-events-none" />
+        <div className="absolute right-0 top-0 bottom-0 w-24 md:w-64 bg-gradient-to-l from-white via-white/80 to-transparent z-10 pointer-events-none" />
         
-        {/* The Animated Track */}
-        <div className="flex w-max gap-8 animate-brand-scroll group-hover:[animation-play-state:paused] py-4">
-          {/* We double the brands for a seamless loop */}
-          {[...brands, ...brands].map((b, idx) => (
-            <a
-              key={idx}
-              href={b.link}
-              className="relative flex items-center justify-center
-                         bg-gray-50/50 grayscale opacity-60
-                         hover:grayscale-0 hover:opacity-100 hover:bg-white
-                         border border-transparent hover:border-red-100
-                         rounded-2xl
-                         min-w-[140px] sm:min-w-[180px] md:min-w-[220px]
-                         h-24 sm:h-28 md:h-32
-                         p-6 transition-all duration-500 ease-out
-                         group/card shadow-sm hover:shadow-xl hover:-translate-y-1"
-            >
-              <img
-                src={b.img}
-                alt={b.name}
-                className="h-full w-full object-contain transition-transform duration-500 group-hover/card:scale-110"
-              />
-              {/* Subtle hover indicator */}
-              <div className="absolute bottom-2 right-4 opacity-0 group-hover/card:opacity-100 transition-opacity">
-                 <div className="w-1.5 h-1.5 rounded-full bg-red-600" />
-              </div>
-            </a>
-          ))}
-        </div>
+        {/* Infinite Motion Track */}
+        <div className="flex overflow-hidden">
+          <motion.div 
+            className="flex gap-8 py-6 pr-8"
+            animate={{ x: ["0%", "-50%"] }}
+            transition={{
+              x: {
+                repeat: Infinity,
+                repeatType: "loop",
+                duration: 30, // Adjust speed here (lower is faster)
+                ease: "linear",
+              },
+            }}
+            // Pause on hover
+            whileHover={{ animationPlayState: "paused" }} 
+            style={{ display: 'flex', width: 'fit-content' }}
+          >
+            {duplicatedBrands.map((b, idx) => (
+              <motion.a
+                key={idx}
+                href={b.link}
+                whileHover={{ 
+                  y: -8, 
+                  scale: 1.02,
+                  borderColor: "rgba(220, 38, 38, 0.2)" // red-600 at 20% opacity
+                }}
+                transition={{ type: "spring", stiffness: 400, damping: 17 }}
+                className="relative flex items-center justify-center
+                           bg-gray-50/50 grayscale opacity-60
+                           hover:grayscale-0 hover:opacity-100 hover:bg-white
+                           border border-gray-100/50
+                           rounded-2xl
+                           min-w-[160px] sm:min-w-[200px] md:min-w-[260px]
+                           h-24 sm:h-28 md:h-36
+                           p-8 transition-all duration-300
+                           group shadow-sm hover:shadow-2xl hover:shadow-red-500/5"
+              >
+                <img
+                  src={b.img}
+                  alt={b.name}
+                  className="h-full w-full object-contain transition-transform duration-500 group-hover:scale-110"
+                />
+                
+                {/* Industrial Status Indicator */}
+                <div className="absolute top-4 right-4 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <div className="w-1 h-1 rounded-full bg-red-600 animate-pulse" />
+                  <div className="w-1 h-1 rounded-full bg-red-600/40" />
+                </div>
 
-        {/* Right Mask Overlay */}
-        <div className="absolute right-0 top-0 bottom-0 w-20 md:w-40 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none" />
+                {/* Bottom Border Accent */}
+                <motion.div 
+                  className="absolute bottom-0 left-1/2 -translate-x-1/2 h-0.5 bg-red-600 rounded-full"
+                  initial={{ width: 0 }}
+                  whileHover={{ width: "40%" }}
+                />
+              </motion.a>
+            ))}
+          </motion.div>
+        </div>
       </div>
 
-      {/* Animation Styles */}
-      <style>{`
-        @keyframes brand-scroll {
-          from { 
-            transform: translateX(0); 
-          }
-          to { 
-            transform: translateX(calc(-50% - 1rem)); 
-          }
-        }
-        .animate-brand-scroll {
-          animation: brand-scroll 35s linear infinite;
-        }
-      `}</style>
+      {/* ================= FOOTER META ================= */}
+      <motion.div 
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        transition={{ delay: 0.8 }}
+        className="max-w-7xl mx-auto px-6 mt-12 flex justify-between items-center text-[9px] font-black uppercase tracking-[0.3em] text-gray-300"
+      >
+        <span>Global Supply Chain</span>
+        <div className="h-[1px] flex-1 mx-8 bg-gray-100" />
+        <span>Verified Logistics</span>
+      </motion.div>
     </div>
   );
 }

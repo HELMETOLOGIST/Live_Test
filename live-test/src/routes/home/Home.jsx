@@ -1,7 +1,12 @@
 import React from "react";
 import HeroSlider from "../../components/home/BannerSlider";
 import BrandSlider from "../../components/home/BrandSlider";
-import ExploreDeals from "../../components/home/ExploreDeals"
+import ExploreDeals from "../../components/home/ExploreDeals";
+import Testimonials from "../../components/home/Testimonials";
+import Gallery from "../../components/home/Gallery";
+import Blog from "../../components/home/Blog";
+import RecentlyViewed from "../../components/home/RecentlyViewed";
+
 
 export default function Home() {
   return (
@@ -16,10 +21,32 @@ export default function Home() {
       <div className="mt-10 px-2">
         <BrandSlider />
       </div>
-    {/* Explore Deals */}
+
+      {/* EXPLORE DEALS */}
       <div className="w-full">
         <ExploreDeals />
       </div>
+
+      {/* TESTIMONIALS & AWARDS */}
+      <div className="w-full">
+        <Testimonials />
+      </div>
+
+      {/* GALLERY */}
+      <div className="w-full">
+        <Gallery />
+      </div>
+
+      {/* Recently Viewed */}
+      <div className="w-full">
+        <RecentlyViewed />
+      </div>
+
+      {/* BLOG */}
+      <div className="w-full">
+        <Blog />
+      </div>
+
 
     </div>
   );

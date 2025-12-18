@@ -1,6 +1,6 @@
-import React, { useEffect, useRef, useState } from "react";
-import { gsap } from "gsap";
-import { ChevronRight } from "lucide-react";
+import React, { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { ChevronRight, ArrowRight } from "lucide-react";
 
 // Assuming these imports remain the same
 import bosch from "@/assets/banners/bosch1.png";
@@ -37,125 +37,130 @@ const slides = [
 
 export default function HeroSlider() {
   const [index, setIndex] = useState(0);
-  const slideRefs = useRef([]);
-  const textRefs = useRef([]);
-  const progressRefs = useRef([]);
 
+  // Auto-slide logic
   useEffect(() => {
-    // 1. Image Background Animation (Zoom + Slight Rotation)
-    gsap.fromTo(
-      slideRefs.current[index],
-      { scale: 1.2, opacity: 0 },
-      { scale: 1, opacity: 1, duration: 2, ease: "power4.out" }
-    );
-
-    // 2. Staggered Text Animation
-    const content = textRefs.current[index];
-    if (content) {
-      const elements = content.children;
-      gsap.fromTo(
-        elements,
-        { y: 50, opacity: 0 },
-        { 
-          y: 0, 
-          opacity: 1, 
-          duration: 1, 
-          stagger: 0.2, 
-          ease: "back.out(1.7)",
-          delay: 0.3 
-        }
-      );
-    }
-
-    // 3. Progress Bar Animation
-    gsap.fromTo(
-      progressRefs.current[index],
-      { width: "0%" },
-      { width: "100%", duration: 5, ease: "none" }
-    );
-
-    // Auto-slide logic
-    const interval = setInterval(() => {
+    const timer = setInterval(() => {
       setIndex((prev) => (prev === slides.length - 1 ? 0 : prev + 1));
-    }, 5000);
-
-    return () => clearInterval(interval);
+    }, 6000);
+    return () => clearInterval(timer);
   }, [index]);
 
   return (
-    <div className="relative w-full h-[500px] md:h-[650px] lg:h-[750px] overflow-hidden bg-black">
-      {slides.map((slide, i) => (
-        <div
-          key={i}
-          className={`absolute inset-0 z-10 ${
-            i === index ? "visible pointer-events-auto" : "invisible pointer-events-none"
-          }`}
+    <div className="relative w-full h-[600px] md:h-[750px] lg:h-[850px] overflow-hidden bg-black">
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={index}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.8, ease: "easeInOut" }}
+          className="absolute inset-0"
         >
-          {/* Background Image */}
-          <div className="absolute inset-0 overflow-hidden">
+          {/* Background Image with Ken Burns Effect */}
+          <motion.div 
+            initial={{ scale: 1.2 }}
+            animate={{ scale: 1 }}
+            transition={{ duration: 6, ease: "linear" }}
+            className="absolute inset-0"
+          >
             <img
-              ref={(el) => (slideRefs.current[i] = el)}
-              src={slide.img}
-              alt="slide"
+              src={slides[index].img}
+              alt="Hero Slide"
               className="w-full h-full object-cover"
             />
-            {/* Darker Overlay for Text Contrast */}
-            <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent"></div>
-          </div>
+            {/* SENSE Industrial Gradient Overlay */}
+            <div className="absolute inset-0 bg-gradient-to-r from-black via-black/40 to-transparent" />
+          </motion.div>
 
-          {/* Text Content */}
-          <div
-            ref={(el) => (textRefs.current[i] = el)}
-            className="absolute left-6 md:left-20 top-1/2 -translate-y-1/2 max-w-2xl text-white space-y-6"
-          >
-            <h1 className="text-5xl md:text-8xl font-black uppercase tracking-tighter leading-[0.9] drop-shadow-2xl">
-              {slide.heading}
-            </h1>
+          {/* Text Content Container */}
+          <div className="absolute inset-0 flex flex-col justify-center px-6 md:px-20 z-20">
+            <div className="max-w-4xl space-y-8">
+              
+              {/* Animated Subheading */}
+              <motion.p
+                initial={{ opacity: 0, x: -30 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.3, duration: 0.6 }}
+                className="text-red-600 font-black uppercase tracking-[0.5em] text-xs md:text-sm flex items-center gap-3"
+              >
+                <span className="w-12 h-[2px] bg-red-600 inline-block" />
+                SENSE Hardware Series 2025
+              </motion.p>
 
-            <p className="text-lg md:text-2xl text-gray-300 font-medium max-w-lg">
-              {slide.sub}
-            </p>
+              {/* Main Heading with Staggered Characters/Words */}
+              <motion.h1
+                initial={{ opacity: 0, y: 50, skewY: 7 }}
+                animate={{ opacity: 1, y: 0, skewY: 0 }}
+                transition={{ delay: 0.4, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                className="text-6xl md:text-[10rem] font-black uppercase tracking-tighter italic leading-[0.85] text-white"
+              >
+                {slides[index].heading.split(' ').map((word, i) => (
+                  <span key={i} className={i === 1 ? "text-red-600" : ""}>
+                    {word}<br className="hidden md:block" />
+                  </span>
+                ))}
+              </motion.h1>
 
-            <div className="flex items-center gap-4">
-              <button className="group flex items-center gap-2 px-10 py-4 bg-red-600 hover:bg-white hover:text-red-600 rounded-full text-white text-lg font-black uppercase tracking-widest transition-all duration-300 shadow-2xl">
-                {slide.btn}
-                <ChevronRight className="group-hover:translate-x-2 transition-transform" />
-              </button>
+              {/* Description */}
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.8, duration: 1 }}
+                className="text-gray-400 text-lg md:text-2xl font-medium max-w-xl"
+              >
+                {slides[index].sub}
+              </motion.p>
+
+              {/* CTA Button */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 1, duration: 0.5 }}
+              >
+                <button className="group relative overflow-hidden bg-red-600 text-white px-10 py-5 rounded-full text-[10px] md:text-xs font-black uppercase tracking-widest flex items-center gap-4 transition-all hover:bg-white hover:text-black">
+                  <span className="relative z-10">{slides[index].btn}</span>
+                  <ArrowRight size={18} className="relative z-10 group-hover:translate-x-2 transition-transform" />
+                  {/* Decorative background filler */}
+                  <div className="absolute inset-0 bg-white translate-y-[100%] group-hover:translate-y-0 transition-transform duration-300" />
+                </button>
+              </motion.div>
             </div>
           </div>
-        </div>
-      ))}
+        </motion.div>
+      </AnimatePresence>
 
-      {/* Modern Navigation Controls */}
-      <div className="absolute bottom-12 left-6 md:left-20 right-6 md:right-auto z-30 flex items-center gap-4">
+      {/* Progress & Navigation */}
+      <div className="absolute bottom-12 left-6 md:left-20 z-30 flex items-center gap-6">
         {slides.map((_, i) => (
           <button
             key={i}
             onClick={() => setIndex(i)}
-            className="group flex flex-col gap-2"
+            className="flex flex-col gap-3 group"
           >
-            {/* Numbering */}
-            <span className={`text-[10px] font-black transition-colors ${index === i ? "text-white" : "text-white/30"}`}>
+            <span className={`text-[10px] font-black tracking-tighter transition-colors ${index === i ? "text-red-600" : "text-white/20"}`}>
               0{i + 1}
             </span>
-            {/* The Progress Bar Container */}
-            <div className="w-16 md:w-24 h-[3px] bg-white/20 rounded-full overflow-hidden">
-              <div
-                ref={(el) => (progressRefs.current[i] = el)}
-                className={`h-full bg-red-600 transition-opacity ${
-                  index === i ? "opacity-100" : "opacity-0"
-                }`}
-              ></div>
+            <div className="relative w-16 md:w-32 h-[2px] bg-white/10 overflow-hidden">
+              {index === i && (
+                <motion.div
+                  layoutId="progress-bar"
+                  initial={{ width: 0 }}
+                  animate={{ width: "100%" }}
+                  transition={{ duration: 6, ease: "linear" }}
+                  className="absolute inset-0 bg-red-600"
+                />
+              )}
             </div>
           </button>
         ))}
       </div>
 
-      {/* Side Brand Badge */}
-      <div className="absolute right-10 top-1/2 -rotate-90 origin-right translate-y-1/2 z-30 hidden lg:block">
-        <span className="text-white/10 text-9xl font-black uppercase tracking-widest select-none">
-          SENSE BRAND
-        </span>
+      {/* Side Decorative Badge (Faded Logo) */}
+      <div className="absolute right-[-5%] top-1/2 -translate-y-1/2 rotate-90 hidden lg:block select-none opacity-5">
+        <h2 className="text-[15rem] font-black uppercase tracking-tighter text-white whitespace-nowrap">
+          SENSE SYSTEM
+        </h2>
       </div>
     </div>
   );
