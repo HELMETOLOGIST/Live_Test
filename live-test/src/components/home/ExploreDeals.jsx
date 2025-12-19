@@ -13,7 +13,7 @@ export default function Home() {
       image: "https://thetoolscope.com/wp-content/uploads/2021/03/012-Orbital-Random-Sander-Youtube-Thumbnail-1024x576.png",
       category: "Fasteners",
       tag: "Featured",
-      name: "Hex Nut",
+      name: "Sander",
       description: "Standard hex nut used for fastening bolts in hardware and mechanical assemblies.",
       price: "30"
     },
@@ -22,7 +22,7 @@ export default function Home() {
       image: "https://www.polymak.co.in/category-pics/85_1703329292.jpeg",
       category: "Fasteners",
       tag: "New",
-      name: "Steel Bolt",
+      name: "Cutter",
       description: "High-tensile steel bolt suitable for construction and machinery use.",
       price: "45"
     },
@@ -31,7 +31,7 @@ export default function Home() {
       image: "https://cdn.pixabay.com/photo/2013/07/12/19/30/power-drill-154903_1280.png",
       category: "Fasteners",
       tag: "Featured",
-      name: "Metal Washer",
+      name: "Drill",
       description: "Flat metal washer used to distribute load and prevent surface damage.",
       price: "15"
     },
@@ -40,7 +40,7 @@ export default function Home() {
       image: "https://images.jdmagicbox.com/quickquotes/images_main/bosch-power-tools-rated-voltage-110-220-v-2007332899-q2b3vu6w.jpg",
       category: "Mechanical Parts",
       tag: "New",
-      name: "Ball Bearing",
+      name: "Angle Grinder",
       description: "Precision ball bearing designed for smooth rotation in machines and motors.",
       price: "320"
     },
@@ -49,7 +49,7 @@ export default function Home() {
       image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR5OxGL73-7bFLVw87-yt-meaFoh_ZhlfZ50Q&s",
       category: "Hardware Parts",
       tag: "Featured",
-      name: "Metal Spring",
+      name: "Chain Saw",
       description: "High-carbon steel spring used in mechanical and industrial applications.",
       price: "120"
     },
@@ -58,7 +58,7 @@ export default function Home() {
       image: "https://tiimg.tistatic.com/fp/1/009/198/power-tools-494.jpg",
       category: "Hardware Parts",
       tag: "New",
-      name: "Steel Gear",
+      name: "Jigsaw",
       description: "Machined steel gear for power transmission in industrial equipment.",
       price: "750"
     },
@@ -67,7 +67,7 @@ export default function Home() {
       image: "https://www.polymak.co.in/category-pics/17_1702441149.jpg",
       category: "Hardware Parts",
       tag: "New",
-      name: "Steel Gear",
+      name: "Cordless Drill",
       description: "Machined steel gear for power transmission in industrial equipment.",
       price: "750"
     },
@@ -76,7 +76,7 @@ export default function Home() {
       image: "https://www.liontoolsmart.com/cdn/shop/files/185-1_1000x1000.progressive.jpg?v=1742457385",
       category: "Hardware Parts",
       tag: "New",
-      name: "Steel Gear",
+      name: "Cordless Reciprocating Drill",
       description: "Machined steel gear for power transmission in industrial equipment.",
       price: "750"
     },

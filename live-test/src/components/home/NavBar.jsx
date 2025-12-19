@@ -84,7 +84,7 @@ export default function VestelNavbar() {
                 <img 
                   src={senseLogo} 
                   alt="SENSE Industrial Logo" 
-                  className="w-full h-auto object-contain grayscale brightness-110 contrast-125 group-hover:grayscale-0 group-hover:brightness-100 transition-all duration-500"
+                  className="w-full h-auto object-contain  brightness-110 contrast-125 group-hover:grayscale-0 group-hover:brightness-100 transition-all duration-500"
                 />
               </div>
 

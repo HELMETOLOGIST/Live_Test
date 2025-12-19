@@ -3,32 +3,32 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ChevronRight, ArrowRight } from "lucide-react";
 
 // Assuming these imports remain the same
-import bosch from "@/assets/banners/bosch1.png";
-import dewalt1 from "@/assets/banners/dewalt1.jpg";
-import dewalt2 from "@/assets/banners/dewalt2.jpg";
-import makita from "@/assets/banners/makita1.webp";
+// import bosch from "@/assets/banners/bosch1.png";
+// import dewalt1 from "@/assets/banners/dewalt1.jpg";
+// import dewalt2 from "@/assets/banners/dewalt2.jpg";
+// import makita from "@/assets/banners/makita1.webp";
 
 const slides = [
   {
-    img: bosch,
+    img: "https://i.pinimg.com/originals/21/fd/20/21fd20f35fd5265f2ffbf7f08812d8ee.jpg",
     heading: "Precision Unleashed",
     sub: "Professional grade tools for master craftsmen.",
     btn: "Shop Bosch",
   },
   {
-    img: dewalt1,
+    img: "https://i.pinimg.com/1200x/59/40/25/594025f4961987c2683d0877644fef55.jpg",
     heading: "Toughness Redefined",
     sub: "Guaranteed tough. Built for the modern jobsite.",
     btn: "Explore DeWalt",
   },
   {
-    img: dewalt2,
+    img: "https://i.pinimg.com/1200x/6f/2a/42/6f2a427dc02b77c62465a8da9b804c69.jpg",
     heading: "Limited Time Offers",
     sub: "Exclusive discounts on heavy-duty machinery.",
     btn: "Grab Deals",
   },
   {
-    img: makita,
+    img: "https://i.pinimg.com/1200x/2a/01/52/2a01529083b3181dd051c04efeb07106.jpg",
     heading: "Cordless Innovation",
     sub: "LXT technology for world-class performance.",
     btn: "View Makita",

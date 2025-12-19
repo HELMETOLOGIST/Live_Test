@@ -29,11 +29,11 @@ const itemVariants = {
 };
 
 const recentlyViewedData = [
-  { id: 1, name: "Impact Driver v3", price: 299, category: "Power Tools", image: "https://images.unsplash.com/photo-1504148455328-c376907d081c?auto=format&fit=crop&q=80&w=400" },
-  { id: 2, name: "Laser Level Pro", price: 150, category: "Optics", image: "https://www.liontoolsmart.com/cdn/shop/files/185-1_1000x1000.progressive.jpg?v=1742457385" },
-  { id: 3, name: "Carbon Drill Bit", price: 45, category: "Accessories", image: "https://d2j6dbq0eux0bg.cloudfront.net/images/62425538/4845479430.png" },
-  { id: 4, name: "Thermal Sensor", price: 820, category: "Sensors", image: "https://static.vecteezy.com/system/resources/thumbnails/069/825/730/small/powerful-cordless-electric-drill-a-versatile-tool-for-home-improvement-and-diy-projects-free-photo.jpeg" },
-  { id: 5, name: "Servo Motor X1", price: 340, category: "Motion", image: "https://www.popsci.com/wp-content/uploads/2025/05/essential-tools-circular-saw.jpg?quality=85&w=768" },
+  { id: 1, name: "Cordless Power Drill", price: 299, category: "Power Tools", image: "https://images.unsplash.com/photo-1504148455328-c376907d081c?auto=format&fit=crop&q=80&w=400" },
+  { id: 2, name: "Cordless Reciprocating Drill", price: 150, category: "Optics", image: "https://www.liontoolsmart.com/cdn/shop/files/185-1_1000x1000.progressive.jpg?v=1742457385" },
+  { id: 3, name: "Reciprocating Drill", price: 45, category: "Accessories", image: "https://d2j6dbq0eux0bg.cloudfront.net/images/62425538/4845479430.png" },
+  { id: 4, name: "Cordless Drill", price: 820, category: "Sensors", image: "https://static.vecteezy.com/system/resources/thumbnails/069/825/730/small/powerful-cordless-electric-drill-a-versatile-tool-for-home-improvement-and-diy-projects-free-photo.jpeg" },
+  { id: 5, name: "Cutter", price: 340, category: "Motion", image: "https://www.popsci.com/wp-content/uploads/2025/05/essential-tools-circular-saw.jpg?quality=85&w=768" },
 ];
 
 export default function RecentlyViewed() {

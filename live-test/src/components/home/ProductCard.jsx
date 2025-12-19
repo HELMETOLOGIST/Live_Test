@@ -88,7 +88,7 @@ export default function ProductCard({ product }) {
             {title || "Unnamed Asset"}
           </h3>
           <div className="flex flex-col items-end">
-            <span className="text-xl font-black text-gray-900 leading-none">${price || "0.00"}</span>
+            <span className="text-xl font-black text-gray-900 leading-none">₹{price || "0.00"}</span>
             <span className="text-[10px] text-gray-400 font-bold uppercase mt-1 text-right">Incl. Tax</span>
           </div>
         </div>
