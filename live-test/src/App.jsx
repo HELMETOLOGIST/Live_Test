@@ -1,5 +1,9 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Routes, Route, useNavigate } from "react-router-dom";
+import { AnimatePresence, motion } from "framer-motion";
+
+/* Custom Loader */
+import SENSELoader from "./SENSELoader"; // Ensure the path matches where you saved the loader
 
 /* Layout */
 import ClientLayout from "./layout/ClientLayout";
@@ -10,7 +14,6 @@ import ProductCard from "./components/home/ProductCard";
 import Support from "./components/home/Support";
 import ProductView from "./components/home/ProuductView";
 import Notifcation from "./components/home/Notification";
-// import RecentlyViewed from "./components/home/RecentlyViewed";
 import ProductList from "./components/shop/ProductList";
 import Cart from "./components/shop/Cart";
 import Checkout from "./components/shop/Checkout";
@@ -26,16 +29,23 @@ import Login from "./components/authentication/Login";
 import Signup from "./components/authentication/SignUp";
 import Forgot from "./components/authentication/Forgot";
 import OTP from "./components/authentication/OTP";
-
-import Error404 from "./Error404"
-
-
-
+import Error404 from "./Error404";
 
 export default function App() {
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(true);
 
-  // ---- GitHub Pages redirect fix (for refresh & direct URL) ----
+  // ---- Loader Logic ----
+  useEffect(() => {
+    // Simulate system boot-up
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 2500); // 2.5 seconds for the SENSE industrial animation
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  // ---- GitHub Pages redirect fix ----
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const redirect = params.get("redirect");
@@ -44,76 +54,75 @@ export default function App() {
       navigate(redirect, { replace: true });
     }
   }, [navigate]);
-  // ------------------------------------------------------------
 
   return (
-    <Routes>
-      {/* CLIENT SIDE ROUTES */}
-      <Route element={<ClientLayout />}>
-        <Route path="/" element={<Home />} />
-        
-        {/* DYNAMIC PRODUCT VIEW ROUTE */}
-        {/* The :id allows you to catch any product ID like /product/vw-polo-brake */}
-        <Route path="/productview" element={<ProductView />} />
-        
-        <Route path="/productcard" element={<ProductCard />} />
-        <Route path="/support" element={<Support />} />
+    <>
+      <AnimatePresence mode="wait">
+        {isLoading && <SENSELoader key="loader" />}
+      </AnimatePresence>
 
-        {/* SHOP */}
-        <Route path="/shop" element={<ProductList />} />
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: isLoading ? 0 : 1 }}
+        transition={{ duration: 1, ease: "easeInOut" }}
+      >
+        <Routes>
+          {/* CLIENT SIDE ROUTES */}
+          <Route element={<ClientLayout />}>
+            <Route path="/" element={<Home />} />
+            
+            {/* DYNAMIC PRODUCT VIEW ROUTE */}
+            <Route path="/productview" element={<ProductView />} />
+            <Route path="/productcard" element={<ProductCard />} />
+            <Route path="/support" element={<Support />} />
 
-        {/* CART */}
-        <Route path="/cart" element={<Cart />} />
+            {/* SHOP */}
+            <Route path="/shop" element={<ProductList />} />
 
-        {/* CHECKOUT */}
-        <Route path="/checkout" element={<Checkout />} />
+            {/* CART */}
+            <Route path="/cart" element={<Cart />} />
 
-        {/* PAYMENT */}
-        <Route path="/payment" element={<Payment />} />
+            {/* CHECKOUT */}
+            <Route path="/checkout" element={<Checkout />} />
 
-        {/* ORDER CONFIRMATION */}
-        <Route path="/orderconfirmation" element={<OrderConfirmation />} />
-        
-        {/* INVOICE */}
-        <Route path="/invoice" element={<Invoice />} />
+            {/* PAYMENT */}
+            <Route path="/payment" element={<Payment />} />
 
-        {/* NOTIFICATION */}
-        <Route path="/notification" element={<Notifcation />} />
+            {/* ORDER CONFIRMATION */}
+            <Route path="/orderconfirmation" element={<OrderConfirmation />} />
+            
+            {/* INVOICE */}
+            <Route path="/invoice" element={<Invoice />} />
 
-        {/* ABOUT US */}
-        <Route path="/aboutus" element={<AboutUs />} />
+            {/* NOTIFICATION */}
+            <Route path="/notification" element={<Notifcation />} />
 
-        {/* MY ACCOUNT */}
-        <Route path="/myaccount" element={<MyAccount />} />
+            {/* ABOUT US */}
+            <Route path="/aboutus" element={<AboutUs />} />
 
-        {/* MY ORDER */}
-        <Route path="/myorder" element={<MyOrder />} />
+            {/* MY ACCOUNT */}
+            <Route path="/myaccount" element={<MyAccount />} />
 
-        {/* ORDER DETAILS */}
-        <Route path="/orderdetails" element={<OrderDetails />} />
+            {/* MY ORDER */}
+            <Route path="/myorder" element={<MyOrder />} />
 
-        {/* WISHLIST */}
-        <Route path="/wishlist" element={<Wishlist />} />
+            {/* ORDER DETAILS */}
+            <Route path="/orderdetails" element={<OrderDetails />} />
 
+            {/* WISHLIST */}
+            <Route path="/wishlist" element={<Wishlist />} />
 
-        {/* Authentication Area */}
-        {/* LOGIN */}
-        <Route path="/login" element={<Login />} />
+            {/* Authentication Area */}
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/forgot" element={<Forgot />} />
+            <Route path="/otp" element={<OTP />} />
 
-        {/* SIGNUP */}
-        <Route path="/signup" element={<Signup />} />
-
-        {/* FORGOT */}
-        <Route path="/forgot" element={<Forgot />} />
-
-        {/* OTP */}
-        <Route path="/otp" element={<OTP />} />
-
-
-      {/* ERROR PAGES */}
-      <Route path="/error404" element={<Error404 />} />
-
-      </Route>
-    </Routes>
+            {/* ERROR PAGES */}
+            <Route path="/error404" element={<Error404 />} />
+          </Route>
+        </Routes>
+      </motion.div>
+    </>
   );
 }

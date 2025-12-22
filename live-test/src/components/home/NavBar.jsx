@@ -191,7 +191,7 @@ export default function VestelNavbar() {
             </div>
 
             <div className="text-[11px] font-black text-red-600 bg-red-50 px-4 py-2 rounded-lg tracking-[0.2em] uppercase">
-              Free Shipping on $100+
+              Free Shipping on ₹100+
             </div>
           </div>
         </motion.div>
